@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sig Untuk Pemetaan Lokasi Waterfall Di Petang</title>
+    <meta
+      name="description"
+      content="SIG untuk pemetaan lokasi waterfall di Petang dengan informasi lengkap akses, pemandangan, dan foto air terjun tersembunyi di Badung Utara."
+    />
+    <meta
+      name="keywords"
+      content="SIG, pemetaan waterfall, air terjun Petang, Badung Utara, wisata alam, peta air terjun, trekking, konservasi"
+    />
+    <meta
+      name="author"
+      content="SIG Pariwisata Badung Utara - ITB STIKOM Bali"
+    />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>
+          Sistem Informasi Geografis Pariwisata Untuk Pemetaan Lokasi Waterfall
+          Di Petang
+        </h1>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="filter-section">
+        <label for="filter-access">Filter Akses:</label>
+        <select id="filter-access" onchange="filterWaterfalls()">
+          <option value="all">Semua</option>
+          <option value="motor bisa">Mudah (motor bisa sampai)</option>
+          <option value="tangga">Tangga curam</option>
+          <option value="berkelok">Jalan berkelok</option>
+        </select>
+      </section>
+
+      <section id="map-section">
+        <h2>Peta Lokasi Air Terjun</h2>
+        <div id="map"></div>
+      </section>
+
+      <section class="waterfall" id="kembar-lipah" data-akses="tangga">
+        <h2>Air Terjun Kembar Lipah</h2>
+        <p>
+          Air Terjun Kembar Lipah dikenal dengan dua aliran air terjun
+          berdampingan yang menawan. Suasana alami sejuk dan habitat flora-fauna
+          endemik membuatnya istimewa.
+        </p>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.832648383199!2d115.20738371524759!3d-8.37897904891988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2214e862c8239%3A0xb1b7021e067dd971!2sAir%20Terjun%20Lipah%20Petang!5e0!3m2!1sid!2sid!4v1684950000000!5m2!1sid!2sid"
+            width="100%"
+            height="300"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            title="Peta Air Terjun Lipah"
+          ></iframe>
+        </div>
+        <table>
+          <tr>
+            <th>Lokasi</th>
+            <td>Banjar Lipah, Desa Petang</td>
+          </tr>
+          <tr>
+            <th>Jam Buka</th>
+            <td>07:00</td>
+          </tr>
+          <tr>
+            <th>Jam Tutup</th>
+            <td>17:00</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td class="status"></td>
+          </tr>
+          <tr>
+            <th>Waktu</th>
+            <td>1 jam 30 menit dari Denpasar</td>
+          </tr>
+          <tr>
+            <th>Akses</th>
+            <td>Melewati Desa Kerta, tangga curam</td>
+          </tr>
+          <tr>
+            <th>Pemandangan</th>
+            <td>Air terjun kembar 10-15 meter</td>
+          </tr>
+          <tr>
+            <th>Kunjungan</th>
+            <td>Pagi hari</td>
+          </tr>
+          <tr>
+            <th>Tiket</th>
+            <td>Rp 10.000 / Rp 25.000</td>
+          </tr>
+        </table>
+        <div class="carousel-container" data-carousel>
+          <button class="carousel-btn prev" aria-label="Slide sebelumnya">
+            &#10094;
+          </button>
+          <div class="carousel-track">
+            <div class="carousel-slide">
+              <img src="foto/Kembar_Lipah1.jpg" alt="Kembar Lipah 1" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/Kembar_Lipah4.jpg" alt="Kembar Lipah 2" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/Kembar_Lipah2.jpg" alt="Kembar Lipah 3" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/Kembar_Lipah3.jpg" alt="Kembar Lipah 4" />
+            </div>
+          </div>
+          <button class="carousel-btn next" aria-label="Slide berikutnya">
+            &#10095;
+          </button>
+        </div>
+        <div class="review-section">
+          <h3>Ulasan Pengunjung</h3>
+          <textarea
+            id="review-text-kembar-lipah"
+            placeholder="Tulis ulasan Anda di sini..."
+          ></textarea>
+          <button onclick="submitReview('kembar-lipah')">Kirim</button>
+          <div id="reviews-list-kembar-lipah" class="reviews-list"></div>
+        </div>
+      </section>
+
+      <section class="waterfall" id="goa-gong" data-akses="motor bisa">
+        <h2>Air Terjun Goa Gong</h2>
+        <p>
+          Goa Gong menawarkan air terjun deras dengan akses yang mudah karena
+          motor bisa sampai bawah. Cocok untuk kunjungan keluarga dan wisatawan
+          umum.
+        </p>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.291931637394!2d115.21300911524686!3d-8.34880905514586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2210de3119b03%3A0x848dcb4f7a6f4f8c!2sGoaGong%20Waterfall!5e0!3m2!1sid!2sid!4v1684950100000!5m2!1sid!2sid"
+            width="100%"
+            height="300"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            title="Peta Goa Gong"
+          ></iframe>
+        </div>
+        <table>
+          <tr>
+            <th>Lokasi</th>
+            <td>Desa Batu Lantang, Sulangai</td>
+          </tr>
+          <tr>
+            <th>Jam Buka</th>
+            <td>09:00</td>
+          </tr>
+          <tr>
+            <th>Jam Tutup</th>
+            <td>17:00</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td class="status"></td>
+          </tr>
+          <tr>
+            <th>Waktu</th>
+            <td>1 jam 30 menit dari Denpasar</td>
+          </tr>
+          <tr>
+            <th>Akses</th>
+            <td>Motor bisa sampai bawah</td>
+          </tr>
+          <tr>
+            <th>Pemandangan</th>
+            <td>Air deras 10-15 meter</td>
+          </tr>
+          <tr>
+            <th>Kunjungan</th>
+            <td>Bebas</td>
+          </tr>
+          <tr>
+            <th>Tiket</th>
+            <td>Rp 10.000</td>
+          </tr>
+        </table>
+        <div class="carousel-container" data-carousel>
+          <button class="carousel-btn prev" aria-label="Slide sebelumnya">
+            &#10094;
+          </button>
+          <div class="carousel-track">
+            <div class="carousel-slide">
+              <img src="foto/goa2.jpg" alt="Goa Gong 1" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/goa3.jpg" alt="Goa Gong 2" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/goa1.jpg" alt="Goa Gong 3" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/goa4.jpg" alt="Goa Gong 4" />
+            </div>
+          </div>
+          <button class="carousel-btn next" aria-label="Slide berikutnya">
+            &#10095;
+          </button>
+        </div>
+        <div class="review-section">
+          <h3>Ulasan Pengunjung</h3>
+          <textarea
+            id="review-text-goa-gong"
+            placeholder="Tulis ulasan Anda di sini..."
+          ></textarea>
+          <button onclick="submitReview('goa-gong')">Kirim</button>
+          <div id="reviews-list-goa-gong" class="reviews-list"></div>
+        </div>
+      </section>
+
+      <section class="waterfall" id="nungnung" data-akses="tangga">
+        <h2>Air Terjun Nungnung</h2>
+        <p>
+          Air Terjun Nungnung dengan ketinggian 50 meter, menawarkan panorama
+          luar biasa. Akses berupa ratusan tangga curam menantang wisatawan yang
+          aktif.
+        </p>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.023936153468!2d115.11711161477627!3d-8.463245693971234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd241f6293b7cc1%3A0x8ae20f42574e95b7!2sAir%20Terjun%20Nungnung!5e0!3m2!1sid!2sid!4v1684913000000!5m2!1sid!2sid"
+            width="100%"
+            height="300"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            title="Peta Nungnung"
+          ></iframe>
+        </div>
+        <table>
+          <tr>
+            <th>Lokasi</th>
+            <td>Desa Pelaga</td>
+          </tr>
+          <tr>
+            <th>Jam Buka</th>
+            <td>09:00</td>
+          </tr>
+          <tr>
+            <th>Jam Tutup</th>
+            <td>18:00</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td class="status"></td>
+          </tr>
+          <tr>
+            <th>Waktu</th>
+            <td>1 jam 15 menit dari Denpasar</td>
+          </tr>
+          <tr>
+            <th>Akses</th>
+            <td>Ratusan tangga curam</td>
+          </tr>
+          <tr>
+            <th>Pemandangan</th>
+            <td>Air terjun 50 meter</td>
+          </tr>
+          <tr>
+            <th>Kunjungan</th>
+            <td>Bebas</td>
+          </tr>
+          <tr>
+            <th>Tiket</th>
+            <td>Rp 10.000 + parkir</td>
+          </tr>
+        </table>
+        <div class="carousel-container" data-carousel>
+          <button class="carousel-btn prev" aria-label="Slide sebelumnya">
+            &#10094;
+          </button>
+          <div class="carousel-track">
+            <div class="carousel-slide">
+              <img src="foto/nung1.jpg" alt="Nungnung 1" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/nung2.jpg" alt="Nungnung 2" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/nung3.jpg" alt="Nungnung 3" />
+            </div>
+          </div>
+          <button class="carousel-btn next" aria-label="Slide berikutnya">
+            &#10095;
+          </button>
+        </div>
+        <div class="review-section">
+          <h3>Ulasan Pengunjung</h3>
+          <textarea
+            id="review-text-nungnung"
+            placeholder="Tulis ulasan Anda di sini..."
+          ></textarea>
+          <button onclick="submitReview('nungnung')">Kirim</button>
+          <div id="reviews-list-nungnung" class="reviews-list"></div>
+        </div>
+      </section>
+
+      <section class="waterfall" id="penikit" data-akses="berkelok">
+        <h2>Air Terjun Penikit</h2>
+        <p>
+          Penikit adalah mata air suci untuk melukat dengan akses jalan curam
+          dan berkelok. Tempat ini bebas tiket masuk dan sering dikunjungi untuk
+          upacara adat.
+        </p>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.842613372988!2d115.23113621524298!3d-8.342815646757356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2208a8c8d733f%3A0x24c5aeb51ed64ea0!2sAir%20Terjun%20Penikit!5e0!3m2!1sid!2sid!4v1684950200000!5m2!1sid!2sid"
+            width="100%"
+            height="300"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            title="Peta Penikit"
+          ></iframe>
+        </div>
+        <table>
+          <tr>
+            <th>Lokasi</th>
+            <td>Desa Belok Sidan</td>
+          </tr>
+          <tr>
+            <th>Jam Buka</th>
+            <td>08:00</td>
+          </tr>
+          <tr>
+            <th>Jam Tutup</th>
+            <td>18:00</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td class="status"></td>
+          </tr>
+          <tr>
+            <th>Waktu</th>
+            <td>1 jam 30 menit dari Denpasar</td>
+          </tr>
+          <tr>
+            <th>Akses</th>
+            <td>Jalan curam & berkelok</td>
+          </tr>
+          <tr>
+            <th>Pemandangan</th>
+            <td>Mata air untuk melukat</td>
+          </tr>
+          <tr>
+            <th>Kunjungan</th>
+            <td>Bebas</td>
+          </tr>
+          <tr>
+            <th>Tiket</th>
+            <td>Gratis</td>
+          </tr>
+        </table>
+        <div class="carousel-container" data-carousel>
+          <button class="carousel-btn prev" aria-label="Slide sebelumnya">
+            &#10094;
+          </button>
+          <div class="carousel-track">
+            <div class="carousel-slide">
+              <img src="foto/penikit1.jpg" alt="Penikit 1" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/penikit3.jpg" alt="Penikit 3" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/penikit2.jpg" alt="Penikit 2" />
+            </div>
+            <div class="carousel-slide">
+              <img src="foto/penikit4.jpg" alt="Penikit 4" />
+            </div>
+          </div>
+          <button class="carousel-btn next" aria-label="Slide berikutnya">
+            &#10095;
+          </button>
+        </div>
+        <div class="review-section">
+          <h3>Ulasan Pengunjung</h3>
+          <textarea
+            id="review-text-penikit"
+            placeholder="Tulis ulasan Anda di sini..."
+          ></textarea>
+          <button onclick="submitReview('penikit')">Kirim</button>
+          <div id="reviews-list-penikit" class="reviews-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        &copy; Sistem Informasi Geografis Pariwisata Untuk Pemetaan Lokasi
+        Waterfall Di Petang - ITB STIKOM Bali
+      </p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="carousel.js"></script>
+  </body>
+</html>
